@@ -22,6 +22,7 @@ commonSources:= \
 	BlobCache.cpp \
 	CallStack.cpp \
 	FileMap.cpp \
+        Flattenable.cpp \
 	JenkinsHash.cpp \
 	LinearAllocator.cpp \
 	LinearTransform.cpp \
@@ -120,6 +121,13 @@ LOCAL_SHARED_LIBRARIES := \
         liblog \
         libdl
 
+ifeq ($(BOARD_USES_QC_TIME_SERVICES),true)
+LOCAL_CFLAGS += -DHAVE_QC_TIME_SERVICES=1
+LOCAL_SHARED_LIBRARIES += libtime_genoff
+$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/)
+$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/export_includes)
+endif
+
 LOCAL_MODULE:= libutils
 include $(BUILD_STATIC_LIBRARY)
 
@@ -133,6 +141,13 @@ LOCAL_SHARED_LIBRARIES := \
         libcutils \
         libdl \
         libcorkscrew
+
+ifeq ($(BOARD_USES_QC_TIME_SERVICES),true)
+LOCAL_CFLAGS += -DHAVE_QC_TIME_SERVICES=1
+LOCAL_SHARED_LIBRARIES += libtime_genoff
+$(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/)
+$(shell touch $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/export_includes)
+endif
 
 include $(BUILD_SHARED_LIBRARY)
 
